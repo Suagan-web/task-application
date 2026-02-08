@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="so">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task App-kaaga</title>
+    <style>
+        /* CSS Qaybtiisa */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .card {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        h2 { color: #333; margin-bottom: 5px; }
+        p { color: #666; margin-bottom: 25px; font-size: 0.9rem; }
+
+        /* Hagaajinta sanduuqyada */
+        .input-group {
+            display: flex;
+            flex-direction: column; /* Waxay u habaysan yihiin mid hoos mara midka kale si aysan u dalooshan */
+            gap: 12px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 10px;
+        }
+
+        input[type="text"] {
+            flex: 2;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        select {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            cursor: pointer;
+        }
+
+        input:focus, select:focus {
+            border-color: #2a5298;
+        }
+
+        #addBtn {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: 0.3s;
+        }
+
+        #addBtn:hover {
+            background-color: #218838;
+            transform: translateY(-2px);
+        }
+
+        /* Liiska Tasks-ka */
+        #taskList {
+            margin-top: 25px;
+            list-style: none;
+            text-align: left;
+        }
+
+        .task-item {
+            background: #f8f9fa;
+            margin-bottom: 10px;
+            padding: 12px;
+            border-left: 5px solid #2a5298;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .category-label {
+            font-size: 0.75rem;
+            background: #e2e8f0;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+            color: #4a5568;
+            margin-right: 8px;
+        }
+
+        .delete-btn {
+            background: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        .delete-btn:hover { background: #cc0000; }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h2>Task App-kaaga</h2>
+        <p>Maamul hawlahaaga maalin laha ah</p>
+
+        <div class="input-group">
+            <div class="form-row">
+                <input type="text" id="taskInput" placeholder="Maxaa kuu qorshaysan m...">
+                <select id="categorySelect">
+                    <option value="Shop">Shop</option>
+                    <option value="Work">Work</option>
+                    <option value="Home">Home</option>
+                    <option value="Time">Time</option>
+                    <option value="Daily Routing">Daily Routing</option>
+                </select>
+            </div>
+            <button id="addBtn">Ku dar Hawsha</button>
+        </div>
+
+        <ul id="taskList">
+            </ul>
+    </div>
+
+    <script>
+        // JavaScript Qaybtiisa
+        const addBtn = document.getElementById('addBtn');
+        const taskInput = document.getElementById('taskInput');
+        const categorySelect = document.getElementById('categorySelect');
+        const taskList = document.getElementById('taskList');
+
+        addBtn.addEventListener('click', () => {
+            const taskValue = taskInput.value.trim();
+            const categoryValue = categorySelect.value;
+
+            if (taskValue === "") {
+                alert("Fadlan qor waxqabadkaaga!");
+                return;
+            }
+
+            // Samee liiska (Item)
+            const li = document.createElement('li');
+            li.className = 'task-item';
+            
+            li.innerHTML = `
+                <div>
+                    <span class="category-label">${categoryValue}</span>
+                    <span>${taskValue}</span>
+                </div>
+                <button class="delete-btn">Tirtir</button>
+            `;
+
+            // Shaqada tirtirista
+            li.querySelector('.delete-btn').addEventListener('click', () => {
+                li.remove();
+            });
+
+            // Ku dar liiska weyn
+            taskList.appendChild(li);
+
+            // Nadiifi sanduuqa qoraalka
+            taskInput.value = "";
+            taskInput.focus();
+        });
+
+        // In lagu dari karo "Enter" marka la riixo
+        taskInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                addBtn.click();
+            }
+        });
+    </script>
+
+</body>
